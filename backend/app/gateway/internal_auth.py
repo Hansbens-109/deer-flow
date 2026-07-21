@@ -78,7 +78,7 @@ def get_trusted_internal_owner_user_id(request: Any) -> str | None:
     if getattr(user, "system_role", None) != INTERNAL_SYSTEM_ROLE:
         return None
 
-    owner_user_id = request.headers.get(INTERNAL_OWNER_USER_ID_HEADER_NAME)
+    owner_user_id = request.headers.get(INTERNAL_OWNER_USER_ID_HEADER_NAME)  # 本次请求的真正 Owner
     if not owner_user_id:
         return None
     owner_user_id = owner_user_id.strip()
