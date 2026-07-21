@@ -106,6 +106,7 @@ export const zhCN: Translations = {
     largeUnavailable: "文件过大，已省略 diff。",
     sensitiveUnavailable: "敏感路径，已隐藏内容。",
     truncatedUnavailable: "变更集过大，已省略 diff。",
+    symlinkUnavailable: "符号链接变更，无法展示 diff。",
     truncatedSummary: "部分变更已被截断。",
   },
 
@@ -121,6 +122,20 @@ export const zhCN: Translations = {
     inputPolishFailed: "优化输入失败。",
     inputPolishUndo: "撤销优化",
     inputPolishCancel: "取消优化",
+    voiceInputStartLabel: "语音输入",
+    voiceInputStopLabel: "停止语音输入",
+    voiceInputStart:
+      "语音输入。DeerFlow 只接收转写文本，音频由浏览器或系统语音服务处理。",
+    voiceInputStop: "停止语音输入",
+    voiceInputListening: "正在聆听... 点击停止语音输入。",
+    voiceInputUnsupported:
+      "当前浏览器不支持语音输入。建议使用 Chrome 或 Edge。",
+    voiceInputPermissionDenied: "麦克风权限被拒绝。请允许麦克风访问后重试。",
+    voiceInputMicrophoneUnavailable: "未检测到麦克风。请检查设备输入后重试。",
+    voiceInputUnsupportedLanguage: "当前浏览器不支持该语言的语音输入。",
+    voiceInputNetworkError: "无法连接浏览器语音识别服务。",
+    voiceInputNoSpeech: "没有检测到语音，请重试。",
+    voiceInputFailed: "语音输入失败，请重试。",
     mode: "模式",
     flashMode: "闪速",
     flashModeDescription: "快速且高效的完成任务，但可能不够精准",
@@ -576,6 +591,7 @@ export const zhCN: Translations = {
     unavailable:
       "暂无 Token 用量。只有模型成功返回且供应商提供 usage_metadata 时才会显示。",
     unavailableShort: "未返回用量",
+    collecting: "统计中",
     note: "顶部总量优先使用后端持久化的线程用量；当当前回复仍在流式返回时，还会叠加可见的进行中用量。每轮和调试用量只来自当前可见消息，可能与平台账单页不完全一致。",
     presets: {
       off: "关闭",
@@ -782,6 +798,9 @@ export const zhCN: Translations = {
     emailPlaceholder: "you@example.com",
     password: "密码",
     passwordPlaceholder: "•••••••",
+    rememberMe: "保持登录",
+    rememberMeDescription:
+      "下次打开 DeerFlow 时尽量保持当前会话，仅保存邮箱，不保存密码。",
     pleaseWait: "请稍候...",
     signIn: "登录",
     createAccount: "创建账号",
