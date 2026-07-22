@@ -620,10 +620,10 @@ async def start_run(
     thread_id : str
         Target thread.
     request : Request
-        FastAPI request — used to retrieve singletons from ``app.state``.
+        FastAPI request — used to retrieve singletons from ``app.state``. 读取 request 中的 app.state共享变量
     """
     bridge = get_stream_bridge(request)  # 内部消息队列
-    run_mgr = get_run_manager(request)  # RunManager
+    run_mgr = get_run_manager(request)  # RunManager，控制 run 的生命周期
     run_ctx = get_run_context(request)  # run_context
 
     disconnect = DisconnectMode.cancel if body.on_disconnect == "cancel" else DisconnectMode.continue_
