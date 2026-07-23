@@ -82,7 +82,7 @@ def build_describe_skill_tool(
         if not matched:
             content = f"No skills matched: {name}"
         else:
-            content = _render_skill_metadata(matched, container_base_path)
+            content = _render_skill_metadata(matched2, container_base_path)
 
         return Command(
             update={

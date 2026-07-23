@@ -8,10 +8,12 @@ from deerflow.subagents.status_contract import SUBAGENT_STATUS_VALUES
 
 
 class SandboxState(TypedDict):
+    """ 沙箱状态 """
     sandbox_id: NotRequired[str | None]
 
 
 class ThreadDataState(TypedDict):
+    """ 线程数据路径状态 """
     workspace_path: NotRequired[str | None]
     uploads_path: NotRequired[str | None]
     outputs_path: NotRequired[str | None]
@@ -19,6 +21,7 @@ class ThreadDataState(TypedDict):
 
 class ViewedImageData(TypedDict):
     """Metadata for a viewed image file.
+        已查看图片数据
 
     Only lightweight metadata is persisted in checkpoint state; the actual
     image bytes are read on-demand from disk when the model needs them.
@@ -26,9 +29,9 @@ class ViewedImageData(TypedDict):
     (see #4138).
     """
 
-    mime_type: str
-    size: int
-    actual_path: str
+    mime_type: str  # MIME 类型（如 image/png）
+    size: int       # 文件大小
+    actual_path: str    # 文件实际路径
 
 
 def merge_sandbox(existing: SandboxState | None, new: SandboxState | None) -> SandboxState | None:
@@ -56,7 +59,8 @@ SandboxStateField = Annotated[NotRequired[SandboxState | None], merge_sandbox]
 
 
 def merge_artifacts(existing: list[str] | None, new: list[str] | None) -> list[str]:
-    """Reducer for artifacts list - merges and deduplicates artifacts."""
+    """Reducer for artifacts list - merges and deduplicates artifacts.
+       用于工件列表的归约器，用于合并和去重工件 """
     if existing is None:
         return new or []
     if new is None:
@@ -237,15 +241,40 @@ def merge_skill_context(existing: list[SkillEntry] | None, new: list[SkillEntry]
 
 
 class ThreadState(AgentState):
+    """ DeerFlow Agent 状态定义
+
+    继承自 LangGraph 的AgentState，扩展DeerFlow 特有字段
+    使用 NoteRequired 标记可选字段，使用 Annotated + reducer 处理合并逻辑
+    """
+
+    # 沙箱信息
     sandbox: SandboxStateField
+
+    # 线程工作目录路径
     thread_data: NotRequired[ThreadDataState | None]
+
+    # 自动生成的对话标题
     title: NotRequired[str | None]
+
+    # 生成的文件列表（使用reducer 自动去重合并）
     artifacts: Annotated[list[str], merge_artifacts]
+
+    # 任务跟踪（plan模式）
     todos: Annotated[list | None, merge_todos]
+
+    # 任务目标
     goal: Annotated[GoalState | None, merge_goal]
+
+    # 上传的文件列表
     uploaded_files: NotRequired[list[dict] | None]
+
+    # 查看过的图片（仅保存轻量元数据，不存Base64，按需从磁盘读取）
     viewed_images: Annotated[dict[str, ViewedImageData], merge_viewed_images]  # image_path -> metadata (no base64)
+    # 延迟 MCP 工具自动提升记录（按目录哈希隔离，哈希变化时整体替换）
     promoted: Annotated[PromotedTools | None, merge_promoted]
+    # 子智能体委托账本（记录每次 task 调用的状态、结果摘要和停止原因）
     delegations: Annotated[list[DelegationEntry], merge_delegations]
+    # 已加载的技能上下文引用（仅存名称/路径/描述，不存 SKILL.md 正文）
     skill_context: Annotated[list[SkillEntry], merge_skill_context]
+    # 对话摘要文本（由 SummarizationMiddleware 生成，作为持久化上下文注入后续请求）
     summary_text: NotRequired[str | None]
